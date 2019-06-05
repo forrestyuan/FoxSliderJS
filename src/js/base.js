@@ -239,7 +239,7 @@ function TouchPlugin(obj) {
         that.setClsName(pinNode, "on");
         //检测当移动事件对象是否发生在合法对象上。
         if (ev.target.tagName !== 'IMG') {
-          domNode[that.eventEnd];
+          domNode[that.eventEnd]();
           return;
         }
         //当达到要重新绑定事件时的条件触发（轮播屏达到边界）
