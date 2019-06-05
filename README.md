@@ -61,7 +61,7 @@ var tp = new TouchPlugin({
 ```
 >运行效果
 
-![运行效果图](https://github.com/forrestyuan/FoxSlider.js/blob/master/%E8%BD%AE%E6%92%AD%E5%9B%BE.gif?raw=true)
+![运行效果图](https://github.com/forrestyuan/FoxSlider.js/blob/master/foxslider.gif?raw=true)
 
 ## 3、`base.js`内主要方法
 
