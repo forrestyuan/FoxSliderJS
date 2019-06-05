@@ -6,7 +6,7 @@
 
  用惯了各种各样的组件，并没有真正意义上的封装一个可以拖拽切屏的轮播图，经过一番编写，发现写这样一个轮播图要想写的好，还真的是挺有难度，不同设备的不同事件完备性？事件触发时机的把控？如何更好的去封装？自适应窗口后的事件重置？等等...，看看swiper这个库的源码，就知道小事情也可以不简单。  
  现在写的这个基本的需求是可以满足的，可以通过拖拽切换也可以点击切换。 
- > **<a herf="">github 传送门（想你来一起完（wan）善(shua)！！Fork 一下你就会很美</a>**
+ > **<a herf="https://github.com/forrestyuan/FoxSlider.js">github 传送门（想你来一起完（wan）善(shua)！！Fork & Star ^_^一下你就会很美</a>**
  
  >**原生撸码一时爽，一直原生一直爽**
 
@@ -16,6 +16,7 @@
 
 ### 1.2、缺点
 - 封装简陋，功能亟需扩充
+- 语义化不够强
 - 用户配置能力弱
 
 ## 2、调用实例
@@ -60,7 +61,7 @@ var tp = new TouchPlugin({
 ```
 >运行效果
 
-![运行效果图](assets/slider1.jpg)
+![运行效果图](https://github.com/forrestyuan/FoxSlider.js/blob/master/%E8%BD%AE%E6%92%AD%E5%9B%BE.gif?raw=true)
 
 ## 3、`base.js`内主要方法
 
