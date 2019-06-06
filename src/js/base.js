@@ -32,7 +32,19 @@ function TouchPlugin(obj) {
     this.autoRun();
   }
 
-
+/**
+ * @desc 设置指定对象移动样式 （transform）
+ * @param {Object} domNode 应用移动样式的对象
+ * @param {Object} conf 配置对象（animateStyle: ease-in-out|linear|ease-in|ease; animateTime:<number>);
+ * @param {number} moveLen 轮播图移动距离（切屏通过控制位移）
+ */
+  this.setTranslate = function (domNode, conf, moveLen) {
+    conf = conf || {};
+    var animateTime = conf.animateTime || '.22s';
+    var animateStyle = conf.animateStyle || 'ease-in-out';
+    moveLen = moveLen || 0;
+    domNode.style.cssText = 'transition:all '+animateStyle +' '+ animateTime+';transform:translateX(' + moveLen + 'px);-ms-transform:translateX(' + moveLen + 'px);-moz-transform:translateX(' + moveLen + 'px);-webkit-transform:translateX(' + moveLen + 'px);-o-transform:translateX(' + moveLen + 'px)';
+  }
   /**
    * @desc 刷新参数
    * @param {number} totalMoveLen 滚动位移
@@ -48,7 +60,8 @@ function TouchPlugin(obj) {
     this.sliderW = Math.floor(this.slider[0].offsetWidth); //轮播容器内的每一屏的宽度
     this.removeClsName(this.pin, 'on');
     this.setClsName(this.pin[spinIndex || 0], 'on');
-    this.sliderBar[0].style.cssText = 'transition:all ease-in-out .22s;transform:translateX(' + (totalMoveLen || 0) + 'px)';
+    this.setTranslate(this.sliderBar[0],{}, this.totalMoveLen);
+    // this.sliderBar[0].style.cssText = 'transition:all ease-in-out .22s;transform:translateX(' + (totalMoveLen || 0) + 'px)';
   }
 
 
@@ -222,7 +235,8 @@ function TouchPlugin(obj) {
         that.dir = that.judgeDir(that.curX, that.preX);
         that.hasmoveLen = that.totalMoveLen + that.curX - that.preX;
         callback( ev, that.dir, Math.round(that.hasmoveLen / that.sliderW) );
-        that.sliderBar[0].style.cssText = "transition:all linear .13s;transform:translateX(0px)";
+        that.setTranslate(that.sliderBar[0],{animateStyle:'linear', animateTime:'0s'},0);
+        // that.sliderBar[0].style.cssText = "transition:all linear .13s;transform:translateX(0px)";
         
         //轮播边界判定 小于第一屏
         if (that.hasmoveLen / that.sliderW > 0.2) {
@@ -234,7 +248,8 @@ function TouchPlugin(obj) {
           that.hasmoveLen = 0;
           that.isNeedRebindTag = true;
         }
-        that.sliderBar[0].style.cssText = "transition:all ease-in-out .22s;transform:translateX(" + that.hasmoveLen + "px)";
+        that.setTranslate(that.sliderBar[0],{animateTime:'0s'},that.hasmoveLen);
+        // that.sliderBar[0].style.cssText = "transition:all ease-in-out .22s;transform:translateX(" + that.hasmoveLen + "px)";
         var pinNode = that.pin[ Math.round(Math.abs(that.hasmoveLen / that.sliderW)) ];
         that.setClsName(pinNode, "on");
         //检测当移动事件对象是否发生在合法对象上。
@@ -261,7 +276,8 @@ function TouchPlugin(obj) {
       var num = Math.round(that.hasmoveLen / that.sliderW);
       num = num > 0 ? -that.slider.length + 1 : num;
       num = num < -(that.slider.length - 1) ? 0 : num;
-      that.sliderBar[0].style.cssText = "transition:all ease-in-out .22s;transform:translateX(" + num * that.sliderW + "px)";
+      that.setTranslate(that.sliderBar[0],{},(num*that.sliderW));
+      // that.sliderBar[0].style.cssText = "transition:all ease-in-out .22s;transform:translateX(" + num * that.sliderW + "px)";
       that.totalMoveLen = num * that.sliderW;
       that.autoRun( 3000, Math.round(Math.abs(that.hasmoveLen / that.sliderW)) );
     };
