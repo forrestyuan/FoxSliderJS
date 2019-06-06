@@ -86,6 +86,19 @@ var tp = new TouchPlugin({
 | spinIndex | <code>number</code> | 轮播指标高亮下标 |
 
 ***
+<a name="setTranslate"></a>
+
+## setTranslate(domNode, conf, moveLen)
+设置指定对象移动样式 （transform）
+
+**Kind**: global function
+
+| Param | Type | Description |
+| --- | --- | --- |
+| domNode | <code>Object</code> | 应用移动样式的对象 |
+| conf | <code>Object</code> | 配置对象（animateStyle: ease-in-out|linear|ease-in|ease; animateTime:<number>); |
+| moveLen | <code>number</code> | 轮播图移动距离（切屏通过控制位移） |
+***
 
 <a name="resize"></a>
 
