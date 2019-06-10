@@ -18,6 +18,7 @@ function TouchPlugin(obj) {
     this.sliderBar = getEle(obj.sliderBar);
     this.pin = getEle(obj.pin);
     this.autoScrollInterval = null;
+    this.hasMove = false;
 
     for (var i = 0; i < this.slider.length; i++) {
       this.slider[i].querySelector('img').setAttribute('ondragstart', 'return false');
@@ -230,14 +231,14 @@ function TouchPlugin(obj) {
       clearInterval(that.autoScrollInterval);
       that.preX = that.mouseX(ev);
       domNode[that.eventMove] = typeof callback == "function" ? function(ev) {
+        console.log('has move')
+        that.hasMove = true; // 鼠标或触摸有滑动位移
         that.removeClsName(that.pin, "on");
         that.curX = that.mouseX(ev);
         that.dir = that.judgeDir(that.curX, that.preX);
         that.hasmoveLen = that.totalMoveLen + that.curX - that.preX;
         callback( ev, that.dir, Math.round(that.hasmoveLen / that.sliderW) );
-        that.setTranslate(that.sliderBar[0],{animateStyle:'linear', animateTime:'0s'},0);
-        // that.sliderBar[0].style.cssText = "transition:all linear .13s;transform:translateX(0px)";
-        
+        // that.setTranslate(that.sliderBar[0],{animateStyle:'linear', animateTime:'0s'},0);
         //轮播边界判定 小于第一屏
         if (that.hasmoveLen / that.sliderW > 0.2) {
           that.hasmoveLen = -(that.slider.length - 1) * that.sliderW;
@@ -260,8 +261,7 @@ function TouchPlugin(obj) {
         //当达到要重新绑定事件时的条件触发（轮播屏达到边界）
         if (that.isNeedRebindTag) {
           that.cancelBind(domNode);
-          that.totalMoveLen =
-            that.dir > 0 ? -(that.slider.length - 1) * that.sliderW : 0;
+          that.totalMoveLen = that.dir > 0 ? -(that.slider.length - 1) * that.sliderW : 0;
           that.isNeedRebindTag = false;
           that.reBindTouchEvent(domNode, callback, isUnbind);
         }
@@ -273,11 +273,16 @@ function TouchPlugin(obj) {
       if(that.checkTargetByCls(ev.target, 'pin')){
         return;
       }
-      var num = Math.round(that.hasmoveLen / that.sliderW);
-      num = num > 0 ? -that.slider.length + 1 : num;
-      num = num < -(that.slider.length - 1) ? 0 : num;
+      var num = 0;
+      if(!that.hasMove){
+        num = Math.round(that.totalMoveLen / that.sliderW)
+      }else{
+        num = Math.round(that.hasmoveLen / that.sliderW);
+        num = num > 0 ? -that.slider.length + 1 : num;
+        num = num < -(that.slider.length - 1) ? 0 : num;
+      }
+      that.hasMove = false;
       that.setTranslate(that.sliderBar[0],{},(num*that.sliderW));
-      // that.sliderBar[0].style.cssText = "transition:all ease-in-out .22s;transform:translateX(" + num * that.sliderW + "px)";
       that.totalMoveLen = num * that.sliderW;
       that.autoRun( 3000, Math.round(Math.abs(that.hasmoveLen / that.sliderW)) );
     };
