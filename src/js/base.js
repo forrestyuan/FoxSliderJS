@@ -4,7 +4,17 @@ var getEle = (function (obj) {
   }
 })(window.document);
 
-
+/**
+ * @param {Object} obj  参数配置，参数的值为 样式名 即可。以下的argument配置在obj对象中
+ * @argument sliderContainer 轮播图最顶层父容器
+ * @argument sliderBar 轮播图Item的父容器
+ * @argument slider 轮播图Item
+ * @argument sliderPin  轮播图小圆点的容器
+ * @argument pin 轮播图高亮小圆点
+ * @argument pinClassName 高亮小圆点时的样式，可自定义样式名
+ * @argument leftRightToggleBtn {left:'.left', rigth:'right'}
+ * 
+ */
 function TouchPlugin(obj) {
   /**
    * @desc 初始化函数
@@ -14,12 +24,14 @@ function TouchPlugin(obj) {
     this.sliderContainer = getEle(obj.sliderContainer);
     this.slider = getEle(obj.slider);
     this.sliderPin = getEle(obj.sliderPin);
-    this.pinClassName = obj.pinClassName;
+    this.pinClassName = obj.pinClassName || "on";
     this.sliderBar = getEle(obj.sliderBar);
     this.pin = getEle(obj.pin);
+    this.leftToggleBtn = ("leftRightToggleBtn" in obj) ? getEle(obj.leftRightToggleBtn.left):null;
+    this.rightToggleBtn = ("leftRightToggleBtn" in obj) ? getEle(obj.leftRightToggleBtn.right):null;
     this.autoScrollInterval = null;
     this.hasMove = false;
-
+    //取消图片拖拽默认事件
     for (var i = 0; i < this.slider.length; i++) {
       this.slider[i].querySelector('img').setAttribute('ondragstart', 'return false');
     }
@@ -30,6 +42,7 @@ function TouchPlugin(obj) {
     this.bindTouchEvent(this.sliderContainer[0], obj.callback, false);
     this.resize();
     this.bindSpinClick();
+    ;!!(this.leftToggleBtn && this.rightToggleBtn) ? this.bindLeftRightBtnClick() : false;
     this.autoRun();
   }
 
@@ -41,7 +54,7 @@ function TouchPlugin(obj) {
  */
   this.setTranslate = function (domNode, conf, moveLen) {
     conf = conf || {};
-    var animateTime = conf.animateTime || '.22s';
+    var animateTime = conf.animateTime || '.3s';
     var animateStyle = conf.animateStyle || 'ease-in-out';
     moveLen = moveLen || 0;
     domNode.style.cssText = 'transition:all '+animateStyle +' '+ animateTime+';transform:translateX(' + moveLen + 'px);-ms-transform:translateX(' + moveLen + 'px);-moz-transform:translateX(' + moveLen + 'px);-webkit-transform:translateX(' + moveLen + 'px);-o-transform:translateX(' + moveLen + 'px)';
@@ -62,7 +75,6 @@ function TouchPlugin(obj) {
     this.removeClsName(this.pin, 'on');
     this.setClsName(this.pin[spinIndex || 0], 'on');
     this.setTranslate(this.sliderBar[0],{}, this.totalMoveLen);
-    // this.sliderBar[0].style.cssText = 'transition:all ease-in-out .22s;transform:translateX(' + (totalMoveLen || 0) + 'px)';
   }
 
 
@@ -140,7 +152,7 @@ function TouchPlugin(obj) {
    */
   this.mouseX = function (event) {
     event = event || window.event;
-    let x = event.clientX || event.pageX || event.touches[0].clientX || event.touches[0].pageX;
+    var x = event.clientX || event.pageX || event.touches[0].clientX || event.touches[0].pageX;
     return x;
   };
 
@@ -175,7 +187,17 @@ function TouchPlugin(obj) {
    */
   this.removeClsName = function (nodeList, clsName) {
     for (var i = 0; i < nodeList.length; i++) {
-      nodeList[i].classList.remove(clsName);
+      if("classList" in nodeList[i]){
+        nodeList[i].classList.remove(clsName);
+      }else{
+        var clsList = nodeList[i].getAttribute("class").split(/\s+/);
+        var tmpArr = [];
+        for(var j = 0; j < clsList.length; j++){
+          clsList[j]!==clsName ? tmpArr.push(clsList[j]) : false;
+        }
+        nodeList[i].setAttribute("class",tmpArr.join(" "));
+        tmpArr = null;
+      }
     }
   };
 
@@ -185,7 +207,12 @@ function TouchPlugin(obj) {
    * @param {string} clsName 样式类名
    */
   this.setClsName = function (node, clsName) {
-    node.classList.add(clsName);
+    if("classList" in node){
+      node.classList.add(clsName);
+    }else{
+      node.setAttribute("class",node.getAttribute("class") +" "+clsName);
+    }
+    
   }
 
   /**
@@ -203,6 +230,30 @@ function TouchPlugin(obj) {
       })(i);
     }
   }
+  /**
+   * @desc 点击左右箭头 切换屏
+   */
+  this.bindLeftRightBtnClick = function () {
+    console.log("init leftrightbtn click")
+    var that = this;
+    console.log((that.leftToggleBtn||that.leftToggleBtn[0]));
+    ;(that.leftToggleBtn[0]||that.leftToggleBtn).onclick = function (ev) {
+      ev.stopPropagation();
+      that.totalMoveLen += that.totalMoveLen + that.sliderW > 0 ? -that.sliderW* (that.slider.length - 1) : that.sliderW;
+      console.log(that.totalMoveLen)
+      var sub =Math.floor(Math.abs(that.totalMoveLen / that.sliderW)); 
+      that.refreshParam(that.totalMoveLen, sub);
+      that.autoRun(3000,sub);
+    }
+    ;(that.rightToggleBtn[0]||that.rightToggleBtn).onclick = function (ev) {
+      ev.stopPropagation();
+      that.totalMoveLen -= that.totalMoveLen - that.sliderW < -that.sliderW * (that.slider.length - 1) ? that.totalMoveLen : that.sliderW;
+      console.log(that.totalMoveLen)
+      var sub =Math.floor(Math.abs(that.totalMoveLen / that.sliderW)); 
+      that.refreshParam(that.totalMoveLen, sub);
+      that.autoRun(3000,sub);
+    }
+  }
   
   /**
    * @desc 通过检测dom节点是否包含某个样式名来判断是否属于目标target
@@ -210,7 +261,21 @@ function TouchPlugin(obj) {
    * @param {string} clsName 
    */
   this.checkTargetByCls = function(domNode, clsName){
-    return domNode.classList.contains(clsName);
+
+    if("clssList" in domNode){
+      return domNode.classList.contains(clsName);
+    }else{
+      if(!domNode.getAttribute("class")){
+        return false;
+      }
+      var clsList = domNode.getAttribute("class").split(/\s+/);
+      for(var i = 0; i < clsList.length; i++){
+        if(clsList[i] == clsName){
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   /**
@@ -236,22 +301,22 @@ function TouchPlugin(obj) {
         that.removeClsName(that.pin, "on");
         that.curX = that.mouseX(ev);
         that.dir = that.judgeDir(that.curX, that.preX);
-        that.hasmoveLen = that.totalMoveLen + that.curX - that.preX;
+        that.hasmoveLen = that.totalMoveLen + (that.curX - that.preX) * 2.2;
         callback( ev, that.dir, Math.round(that.hasmoveLen / that.sliderW) );
-        // that.setTranslate(that.sliderBar[0],{animateStyle:'linear', animateTime:'0s'},0);
         //轮播边界判定 小于第一屏
         if (that.hasmoveLen / that.sliderW > 0.2) {
+          console.log("小于第一屏")
           that.hasmoveLen = -(that.slider.length - 1) * that.sliderW;
           that.isNeedRebindTag = true;
         }
         //轮播边界判定 大于最后一屏
         if ( that.hasmoveLen / that.sliderW < -(that.slider.length - 0.8) ) {
+          console.log("大于最后一屏")
           that.hasmoveLen = 0;
           that.isNeedRebindTag = true;
         }
-        that.setTranslate(that.sliderBar[0],{animateTime:'0s'},that.hasmoveLen);
-        // that.sliderBar[0].style.cssText = "transition:all ease-in-out .22s;transform:translateX(" + that.hasmoveLen + "px)";
-        var pinNode = that.pin[ Math.round(Math.abs(that.hasmoveLen / that.sliderW)) ];
+        that.setTranslate(that.sliderBar[0],{animateTime:that.isNeedRebindTag ? '0.4s' : '.0s'},that.hasmoveLen);
+        var pinNode = that.pin[ Math.round(Math.abs(that.hasmoveLen / that.sliderW))];
         that.setClsName(pinNode, "on");
         //检测当移动事件对象是否发生在合法对象上。
         if (ev.target.tagName !== 'IMG') {
@@ -277,7 +342,7 @@ function TouchPlugin(obj) {
       if(!that.hasMove){
         num = Math.round(that.totalMoveLen / that.sliderW)
       }else{
-        num = Math.round(that.hasmoveLen / that.sliderW);
+        num = Math.round((that.hasmoveLen / that.sliderW));
         num = num > 0 ? -that.slider.length + 1 : num;
         num = num < -(that.slider.length - 1) ? 0 : num;
       }

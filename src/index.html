@@ -6,30 +6,81 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>滚动插件</title>
   <link rel="stylesheet" href="css/index.css">
+  <style>
+    body{background-color:slategray;padding-bottom: 50px;}
+    .tit{color: aquamarine;text-align: center;}
+    h2{color:white;margin-top: 30px;border-bottom: solid #fff 2px;width:100px;padding-bottom: 10px;border-bottom-right-radius: 10px;}
+    .wrapper{padding:0 10px;}
+
+  </style>
 </head>
 <body>
   <header>
-
+    <h1 class="tit">Fox-slider 轮播图</h1>
+    <p></p>
   </header>
-  <div>
-    <div class="slider-container">
+  <div class="wrapper">
+    <h2>样式一：</h2>
+    <div class="slider-container slider-identifier">
       <div class="slide-bar">
-        <div class="slider ">
-          <img src="assets/slider1.jpg" alt="">
-        </div>
-        <div class="slider">
-          <img src="assets/slider2.jpg" alt="">
-        </div>
-        <div class="slider">
-            <img src="assets/slider3.jpg" alt="">
-        </div>
+        <div class="slider "><img src="assets/slider1.jpg"></div>
+        <div class="slider"><img src="assets/slider2.jpg"></div>
+        <div class="slider"><img src="assets/slider3.jpg"></div>
+        <div class="slider"><img src="assets/slider2.jpg"></div>
+        <div class="slider"><img src="assets/slider3.jpg"></div>
       </div>
       <div class="slider-pin">
         <span class="pin on"></span>
         <span class="pin"></span>
         <span class="pin"></span>
+        <span class="pin"></span>
+        <span class="pin"></span>
       </div>
     </div>
+
+    <h2>样式二：</h2>
+    <div class="slider-container slider-identifier2">
+      <div class="slide-bar">
+        <div class="slider"><img src="assets/slider1.jpg"></div>
+        <div class="slider"><img src="assets/slider2.jpg"></div>
+        <div class="slider"><img src="assets/slider3.jpg"></div>
+        <div class="slider"><img src="assets/slider1.jpg"></div>
+        <div class="slider"><img src="assets/slider2.jpg"></div>
+        <div class="slider"><img src="assets/slider3.jpg"></div>
+      </div>
+      <div class="slider-pin">
+        <span class="pin on"></span>
+        <span class="pin"></span>
+        <span class="pin"></span>
+        <span class="pin"></span>
+        <span class="pin"></span>
+        <span class="pin"></span>
+      </div>
+      <div class="left-right-btn">
+        <span class="leftArrowIcon"></span>
+        <span class="rightArrowIcon"></span>
+      </div>
+    </div>
+
+
+    <h2>样式三：</h2>
+    <div class="slider-container slider-identifier3">
+      <div class="slide-bar">
+        <div class="slider "><img src="assets/slider1.jpg"></div>
+        <div class="slider"><img src="assets/slider2.jpg"></div>
+        <div class="slider"><img src="assets/slider3.jpg"></div>
+        <div class="slider"><img src="assets/slider2.jpg"></div>
+        <div class="slider"><img src="assets/slider3.jpg"></div>
+      </div>
+      <div class="slider-pin" data-type="img">
+        <span class="pin on"><img src="assets/slider1.jpg"></span>
+        <span class="pin"><img src="assets/slider2.jpg"></span>
+        <span class="pin"><img src="assets/slider3.jpg"></span>
+        <span class="pin"><img src="assets/slider2.jpg"></span>
+        <span class="pin"><img src="assets/slider3.jpg"></span>
+      </div>
+    </div>
+
   </div>
   <footer>
 
