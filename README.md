@@ -1,12 +1,13 @@
 
 # 原生 JS 撸一个轮播图（支持拖拽切屏）
 
->## FoxSlider.js 称不上库的库 [在线体验](https://forrestyuan.github.io/FoxSlider.js/)
+>## FoxSlider.js 称不上库的库 [在线page](https://forrestyuan.github.io/FoxSlider.js/)
 
 > last update time: 2019-08-15
 > - 修复轮播图边界时滚动不流畅
-> - 新增 **2个**轮播图样式
+> - 新增 **2个**轮播图样式[点我去看效果](https://forrestyuan.github.io/FoxSlider.js/src/index.html)
 > - IE9的一些兼容性修复
+
 ## 1、简述
 
  用惯了各种各样的组件，并没有真正意义上的封装一个可以拖拽切屏的轮播图，经过一番编写，发现写这样一个轮播图要想写的好，还真的是挺有难度，不同设备的不同事件完备性？事件触发时机的把控？如何更好的去封装？自适应窗口后的事件重置？等等...，看看swiper这个库的源码，就知道小事情也可以不简单。  
