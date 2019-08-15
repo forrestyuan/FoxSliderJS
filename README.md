@@ -1,12 +1,17 @@
 
 # 原生 JS 撸一个轮播图（支持拖拽切屏）
 
->## FoxSlider.js 称不上库的库
+>## FoxSlider.js 称不上库的库 [在线体验]()
+
+> last update time: 2019-08-15
+> - 修复轮播图边界时滚动不流畅
+> - 新增 **2个**轮播图样式
+> - IE9的一些兼容性修复
 ## 1、简述
 
  用惯了各种各样的组件，并没有真正意义上的封装一个可以拖拽切屏的轮播图，经过一番编写，发现写这样一个轮播图要想写的好，还真的是挺有难度，不同设备的不同事件完备性？事件触发时机的把控？如何更好的去封装？自适应窗口后的事件重置？等等...，看看swiper这个库的源码，就知道小事情也可以不简单。  
  现在写的这个基本的需求是可以满足的，可以通过拖拽切换也可以点击切换。 
- >[github 传送门（想你来一起完（wan）善(shua)！！Fork & Star ^_^一下你就会很美](https://github.com/forrestyuan/FoxSlider.js)
+ >（想你来一起完（wan）善(shua)！！Fork & Star ^_^一下你就会很美
  
  >**原生撸码一时爽，一直原生一直爽**
 
@@ -15,30 +20,31 @@
 - 面向手机、平板，PC等终端。
 
 ### 1.2、缺点
-- 封装简陋，功能亟需扩充
-- 语义化不够强
-- 用户配置能力弱
+- 功能亟需扩充
+- 用户配置功能有待扩充
+- 轮播图样式不够丰富
+- 性能待测
 
 ## 2、调用实例
 >html 结构代码
 ```html
-<!-- 引入js文件 -->
+<!-- 引入js，css文件 -->
+<link href="css/index.css">
 <script src="js/base.js"></script>
 <!-- 主要dom结构 -->
-<div class="slider-container">
+<h2>样式一：</h2>
+<div class="slider-container slider-identifier">
   <div class="slide-bar">
-    <div class="slider ">
-      <img src="assets/slider1.jpg" alt="">
-    </div>
-    <div class="slider">
-      <img src="assets/slider2.jpg" alt="">
-    </div>
-    <div class="slider">
-        <img src="assets/slider3.jpg" alt="">
-    </div>
+    <div class="slider "><img src="assets/slider1.jpg"></div>
+    <div class="slider"><img src="assets/slider2.jpg"></div>
+    <div class="slider"><img src="assets/slider3.jpg"></div>
+    <div class="slider"><img src="assets/slider2.jpg"></div>
+    <div class="slider"><img src="assets/slider3.jpg"></div>
   </div>
   <div class="slider-pin">
     <span class="pin on"></span>
+    <span class="pin"></span>
+    <span class="pin"></span>
     <span class="pin"></span>
     <span class="pin"></span>
   </div>
@@ -46,18 +52,16 @@
 ```
 >js 代码
 ```js
-//实例化TouchPlugin，传入参数
+//样式1
 var tp = new TouchPlugin({
-    sliderContainer:'.slider-container',
-    slider:'.slider',
-    slidePin:'.slider-pin',
-    sliderBar:'.slide-bar',
-    pinClassName:'on',
-    pin:'.pin',
-    callback:function(e, dir, distance){
-      console.log(dir, distance);
-    }
-  });
+  sliderContainer:'.slider-identifier.slider-container',
+  slider:'.slider-identifier .slider',
+  slidePin:'.slider-identifier .slider-pin',
+  sliderBar:'.slider-identifier .slide-bar',
+  pinClassName:'on',
+  pin:'.slider-identifier .pin',
+  callback:function(e, dir, distance){}
+});
 ```
 >运行效果
 
@@ -211,6 +215,13 @@ var tp = new TouchPlugin({
 
 ### bindSpinClick()
 点击轮播spin 切换屏
+
+**Kind**: global function
+***
+<a name="bindLeftRightBtnClick"></a>
+
+### bindLeftRightBtnClick()
+点击左右按钮切换屏
 
 **Kind**: global function
 ***
