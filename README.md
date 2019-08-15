@@ -27,6 +27,7 @@
 
 ## 2、调用实例
 >html 结构代码
+
 ```html
 <!-- 引入js，css文件 -->
 <link href="./css/index.css">
@@ -50,7 +51,9 @@
   </div>
 </div>
 ```
+
 >js 代码
+
 ```js
 //样式1
 var tp = new TouchPlugin({
