@@ -1,7 +1,7 @@
 
 # 原生 JS 撸一个轮播图（支持拖拽切屏）
 
->## FoxSlider.js 称不上库的库 [在线体验]()
+>## FoxSlider.js 称不上库的库 [在线体验](https://forrestyuan.github.io/FoxSlider.js/src/index.html)
 
 > last update time: 2019-08-15
 > - 修复轮播图边界时滚动不流畅
@@ -29,8 +29,8 @@
 >html 结构代码
 ```html
 <!-- 引入js，css文件 -->
-<link href="css/index.css">
-<script src="js/base.js"></script>
+<link href="./css/index.css">
+<script src="./js/base.js"></script>
 <!-- 主要dom结构 -->
 <h2>样式一：</h2>
 <div class="slider-container slider-identifier">
