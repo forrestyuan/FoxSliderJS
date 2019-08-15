@@ -28,7 +28,7 @@
 ## 2、调用实例
 >html 结构代码
 
-```html
+```
 <!-- 引入js，css文件 -->
 <link href="./css/index.css">
 <script src="./js/base.js"></script>
@@ -36,11 +36,11 @@
 <h2>样式一：</h2>
 <div class="slider-container slider-identifier">
   <div class="slide-bar">
-    <div class="slider "><img src="assets/slider1.jpg"></div>
-    <div class="slider"><img src="assets/slider2.jpg"></div>
-    <div class="slider"><img src="assets/slider3.jpg"></div>
-    <div class="slider"><img src="assets/slider2.jpg"></div>
-    <div class="slider"><img src="assets/slider3.jpg"></div>
+    <div class="slider "><img src="./src/assets/slider1.jpg"></div>
+    <div class="slider"><img src="./src/assets/slider2.jpg"></div>
+    <div class="slider"><img src="./src/assets/slider3.jpg"></div>
+    <div class="slider"><img src="./src/assets/slider2.jpg"></div>
+    <div class="slider"><img src="./src/assets/slider3.jpg"></div>
   </div>
   <div class="slider-pin">
     <span class="pin on"></span>
